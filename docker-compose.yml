@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  zulu-for-opensuse:
+    image: zulu-for-opensuse:latest
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
