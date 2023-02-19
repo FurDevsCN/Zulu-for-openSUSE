@@ -2,6 +2,7 @@ FROM opensuse/tumbleweed:latest
 LABEL Name=zulu-for-opensuse
 LABEL Version=0.0.2
 LABEL org.opencontainers.image.authors="x123456789fy@outlook.com"
+SHELL [ "/bin/bash" , "-c"]
 RUN zypper rr -a
 RUN zypper ar -cfg 'https://opentuna.cn/opensuse/tumbleweed/repo/oss/' opentuna-oss
 RUN zypper ar -cfg 'https://opentuna.cn/opensuse/tumbleweed/repo/non-oss/' opentuna-non-oss
