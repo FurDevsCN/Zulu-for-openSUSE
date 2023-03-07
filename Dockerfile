@@ -21,13 +21,13 @@ RUN zypper --non-interactive ref
 # 安装 jq、curl 和 wget 工具，用于处理 json 数据和下载文件，安装原镜像裁剪掉的 zypper online rpm 解析。
 RUN zypper --non-interactive in jq curl wget gzip bzip2 coreutils findutils
 # 使用curl访问azul.com提供的api接口，获取zulu jre 8版本的 rpm 下载链接，并使用 jq 解析 json 数据，然后直接安装；sed 命令用于去除双引号。
-RUN zypper in  --non-interactive `curl -sX GET "https://api.azul.com/metadata/v1/zulu/packages/?java_version=8&os=linux&arch=amd64&archive_type=rpm&java_package_type=jre&support_term=lts&latest=true&availability_types=CA&include_fields=&page=1&page_size=2" | jq '.[] | .download_url' |sed 's/\"//g'` || true
+RUN zypper --non-interactive in `curl -sX GET "https://api.azul.com/metadata/v1/zulu/packages/?java_version=8&os=linux&arch=amd64&archive_type=rpm&java_package_type=jre&support_term=lts&latest=true&availability_types=CA&include_fields=&page=1&page_size=2" | jq '.[] | .download_url' |sed 's/\"//g'` || true
 # 同上，获取zulu jre 11版本的rpm下载链接，并下载。
-RUN zypper in --non-interactive `curl -sX GET "https://api.azul.com/metadata/v1/zulu/packages/?java_version=11&os=linux&arch=amd64&archive_type=rpm&java_package_type=jre&support_term=lts&latest=true&availability_types=CA&include_fields=&page=1&page_size=2" -H "accept: application/json" | jq '.[] | .download_url' |sed 's/\"//g'` || true
+RUN zypper  --non-interactive in `curl -sX GET "https://api.azul.com/metadata/v1/zulu/packages/?java_version=11&os=linux&arch=amd64&archive_type=rpm&java_package_type=jre&support_term=lts&latest=true&availability_types=CA&include_fields=&page=1&page_size=2" -H "accept: application/json" | jq '.[] | .download_url' |sed 's/\"//g'` || true
 # 同上，获取zulu jre 17版本的rpm下载链接，并下载。注意这里多了一个javafx_bundled=true参数，表示jre中包含了javafx组件。
-RUN zypper in --non-interactive `curl -sX GET "https://api.azul.com/metadata/v1/zulu/packages/?java_version=17&os=linux&arch=amd64&archive_type=rpm&java_package_type=jre&javafx_bundled=true&support_term=lts&latest=true&distro_version=17&java_package_features=headfull&release_status=ga&availability_types=CA&include_fields=&page=1&page_size=2" -H "accept: application/json" | jq '.[] | .download_url' |sed 's/\"//g'` || true
+RUN zypper --non-interactive in `curl -sX GET "https://api.azul.com/metadata/v1/zulu/packages/?java_version=17&os=linux&arch=amd64&archive_type=rpm&java_package_type=jre&javafx_bundled=true&support_term=lts&latest=true&distro_version=17&java_package_features=headfull&release_status=ga&availability_types=CA&include_fields=&page=1&page_size=2" -H "accept: application/json" | jq '.[] | .download_url' |sed 's/\"//g'` || true
 # 卸载之前安装的工具。
-RUN zypper --non-interactive rm jq curl wget gzip bzip2 coreutils findutils
+RUN zypper --non-interactive rm jq curl wget gzip
 # 应用系统更新补丁
 RUN zypper patch
 # 验证系统完整性。
