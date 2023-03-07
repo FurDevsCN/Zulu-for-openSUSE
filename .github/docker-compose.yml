@@ -1,6 +1,0 @@
-- name: Docker Compose Action
-- uses: isbang/compose-action@v1.4.1
-  with:
-    compose-file: "./docker/docker-compose.yml"
-  env:
-    CUSTOM_VARIABLE: "test"
